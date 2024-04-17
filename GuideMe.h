@@ -7,7 +7,7 @@
 using namespace std;
 
 // Class to represent the transportation map
-class TransportationMap {
+class GuideMe {
 public:
 
     // Function to add a transportation link between two cities
