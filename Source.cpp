@@ -43,23 +43,23 @@ vector<Edge> createGraphFromFile(const string& filename) {
         ss >> destination;
 
         double uber = -1, bus = -1, microbus = -1, metro = -1, train = -1;
-        string mode;
+        string transportation;
         double price;
 
-        while (ss >> mode >> price) {
-            if (mode == "Uber") {
+        while (ss >> transportation >> price) {
+            if (transportation == "Uber") {
                 uber = price;
             }
-            else if (mode == "Bus") {
+            else if (transportation == "Bus") {
                 bus = price;
             }
-            else if (mode == "Microbus") {
+            else if (transportation == "Microbus") {
                 microbus = price;
             }
-            else if (mode == "Metro") {
+            else if (transportation == "Metro") {
                 metro = price;
             }
-            else if (mode == "Train") {
+            else if (transportation == "Train") {
                 train = price;
             }
         }
