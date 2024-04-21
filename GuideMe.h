@@ -1,3 +1,4 @@
+#include"files.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,13 +12,13 @@ class GuideMe {
 public:
 
     // Function to add a transportation link between two cities
-    void addTransportation(string& source, string& destination, string transportation, int cost);
+    void addEdge(unordered_map<string, vector<Edge>>& adjList, const string& source, const Edge& edge);
 
     // Function to update transportation cost between two cities
-    void updateTransportation(string& source, string& destination, string transportation, int newCost);
+    void updatEdge(string& source, string& destination, string transportation, int newCost);
 
     // Function to delete a transportation link between two cities
-    void deleteTransportation(string& source, string& destination, string transportation);
+    void deleteEdge(string& source, string& destination, string transportation);
 
     // Function to check if the transportation map is complete
     bool isCompleteMap();

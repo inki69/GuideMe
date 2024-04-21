@@ -1,12 +1,15 @@
 #include "GuideMe.h"
+
+void GuideMe::addEdge(unordered_map<string, vector<Edge>>& adjList, const string& source, const Edge& edge) {
+    adjList[source].push_back(edge);
+    adjList[edge.destination].push_back(Edge(source, edge.uber, edge.bus, edge.microbus, edge.metro, edge.train));
+}
+
 /*
-void GuideMe::addTransportation(string& source, string& destination, string transportation, int cost) {
+void GuideMe::updatEdge(string& source, string& destination, string transportation, int newCost) {
 
 }
-void GuideMe::updateTransportation(string& source, string& destination, string transportation, int newCost) {
-
-}
-void GuideMe::deleteTransportation(string& source, string& destination, string transportation) {
+void GuideMe::void deleteEdge(string& source, string& destination, string transportation) {
 
 }
 bool GuideMe::isCompleteMap() {

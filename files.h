@@ -5,7 +5,8 @@
 #include <sstream>
 #include<unordered_map>
 using namespace std;
-// Structure to represent an edge (transportation option) in the graph
+
+//Struct that represents an edge
 struct Edge {
     
     string destination;     // Destination city
@@ -23,8 +24,6 @@ struct Edge {
 class files
 {
 
-    // Function to read data from file and create a graph
 public:
     unordered_map<string, vector<Edge>> createGraphFromFile(const string& filename);
-    void addEdge(unordered_map<string, vector<Edge>>& adjList, const string& source, const Edge& edge);
 };
