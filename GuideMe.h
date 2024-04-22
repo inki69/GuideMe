@@ -27,9 +27,7 @@ public:
     //Function  to check if the transportation map is connected
    // bool isConnectedMap();
 
-
-    // Function to perform Breadth First Search (BFS)
-    //vector<string> bfs(string& source);
+    void bfs(string& source, unordered_map<string, vector<Edge>>& adjList);
 
     // Function to perform Depth First Search (DFS)
     //vector<string> dfs(string& source);

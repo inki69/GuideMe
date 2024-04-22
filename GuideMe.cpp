@@ -1,4 +1,5 @@
 #include "GuideMe.h"
+#include <unordered_set>
  
 void GuideMe::addEdge(unordered_map<string, vector<Edge>>& adjList, const string& source, const Edge& edge) {
     adjList[source].push_back(edge);
@@ -71,10 +72,27 @@ bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& adjList) {
 //
 //}
 
-//vector<string> GuideMe::bfs(string& source) {
-//
-//}
-//
+void GuideMe::bfs(string& source, unordered_map<string, vector<Edge>>& adjList) {
+    queue<string> q;
+    unordered_set<string> visited;
+
+    q.push(source);
+    visited.insert(source);
+
+    while (!q.empty()) {
+        string currentSource = q.front();
+        q.pop();
+        cout << currentSource << " ";
+
+        for (const auto& edge : adjList[currentSource]) {
+            string destination = edge.destination;
+            if (visited.find(destination) == visited.end()) {
+                visited.insert(destination);
+                q.push(destination);
+            }
+        }
+    }
+}
 //vector<string> GuideMe::dfs(string& source) {
 //
 //}
