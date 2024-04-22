@@ -12,6 +12,17 @@ int main() {
     unordered_map<string, vector<Edge>> graph = fileReader.createGraphFromFile("TransportationMap.txt");
     GuideMe method;
 
+    string source = "Asyut";
+    string destination = "Giza";
+
+    // Find all paths from source to destination
+    cout << "All paths from " << source << " to " << destination << ":\n";
+    method.findAllPaths(source, destination, graph);
+
+
+
+
+    /*
     // Print the original adjacency list
     cout << "Original Adjacency List:" << endl;
     for (const auto& entry : graph) {
@@ -54,6 +65,6 @@ int main() {
             }
         }
     }
-   
+  */
     return 0;
 }

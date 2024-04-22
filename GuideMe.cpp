@@ -61,6 +61,7 @@ void GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const
         cerr << "Error: Transportation type '" << transportation << "' not found for the specified destination." << endl;
     }
 }
+
 void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportations) {
     for (const auto& transportation : transportations) {
         deleteEdgehelper(graph, source, destination, transportation);
@@ -140,7 +141,6 @@ bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& graph) {
     
 }
 
-
 void GuideMe::bfs(string& source, unordered_map<string, vector<Edge>>& graph) {
     queue<string> q;
     unordered_set<string> visited;
@@ -163,18 +163,50 @@ void GuideMe::bfs(string& source, unordered_map<string, vector<Edge>>& graph) {
     }
 
 }
-//
-//int calculateNumNodes(unordered_map<string, vector<Edge>>& graph) {
-//    set<string> nodes;
-//    for (const auto& pair : graph) {
-//        nodes.insert(pair.first); // Inserting the source node into the set
-//    }
-//    return nodes.size();
-//}
 
 //vector<string> GuideMe::dfs(string& source) {
 //
 //}
+
+void GuideMe::printPath(const vector<string>& path) {
+    for (size_t i = 0; i < path.size(); ++i) {
+        cout << path[i];
+        if (i < path.size() - 1) {
+            cout << " -> ";
+        }
+    }
+    cout << endl;
+}
+
+// Modified DFS to find all paths between two vertices in an undirected graph
+void GuideMe::dfsAllPaths(const string& current, const string& destination, const unordered_map<string, vector<Edge>>& graph, unordered_set<string>& visited, vector<string>& path) {
+    visited.insert(current);
+    path.push_back(current);
+
+    if (current == destination) {
+        printPath(path);
+    }
+    else {
+        for (const auto& edge : graph.at(current)) {
+            string nextDestination = edge.destination;
+            if (visited.find(nextDestination) == visited.end()) {
+                dfsAllPaths(nextDestination, destination, graph, visited, path);
+            }
+        }
+    }
+
+    visited.erase(current);
+    path.pop_back();
+}
+
+// Function to find all paths between two vertices in an undirected graph
+void GuideMe::findAllPaths(const string& source, const string& destination, const unordered_map<string, vector<Edge>>& graph) {
+    unordered_set<string> visited;
+    vector<string> path;
+
+    dfsAllPaths(source, destination, graph, visited, path);
+}
+
 
 
 

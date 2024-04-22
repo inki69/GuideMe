@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <queue>
 #include <stack>
+#include <unordered_set>
 using namespace std;
 
 // Class to represent the transportation map
@@ -32,7 +33,11 @@ public:
     // Function to perform Breadth First Search (BFS)
     void bfs(string& source, unordered_map<string, vector<Edge>>& graph);
 
+    void findAllPaths(const string& source, const string& destination, const unordered_map<string, vector<Edge>>& graph);
 
+    void dfsAllPaths(const string& current, const string& destination, const unordered_map<string, vector<Edge>>& graph, unordered_set<string>& visited, vector<string>& path);
+        
+    void printPath(const vector<string>& path);
     // Function to perform Depth First Search (DFS)
     //vector<string> dfs(string& source);
 
