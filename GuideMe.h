@@ -20,8 +20,8 @@ public:
     void updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost);
 
     // Function to delete a transportation link between two cities
-    void deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportation);
-    void deleteEdgehelper(unordered_map<string, vector<Edge>>& graph,const string& source, const string& destination, const string& transportation);
+    void deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportations);
+    void deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportation);
 
     // Function to check if the transportation map is complete
     bool isCompleteMap(unordered_map<string, vector<Edge>>& graph);
@@ -38,11 +38,9 @@ public:
     void dfsAllPaths(const string& current, const string& destination, const unordered_map<string, vector<Edge>>& graph, unordered_set<string>& visited, vector<string>& path);
         
     void printPath(const vector<string>& path);
-    // Function to perform Depth First Search (DFS)
-    //vector<string> dfs(string& source);
 
-    // Function to find all available transportation options within given budget
-    //vector<vector<string>> findAvailableRoutes(string& source, string& destination, int budget);
+    void DFS(const unordered_map<string, vector<Edge>>& graph);
+    void DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited);
 };
 
 

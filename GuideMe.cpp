@@ -13,10 +13,6 @@ void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& 
     graph[edge.destination].push_back(reverseEdge);
 }
 
-//vector<vector<string>> GuideMe::findAvailableRoutes(string& source, string& destination, int budget) {
-//
-//}
-
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
 
     updateEdgehelper(graph, source, destination, transportation, newCost);
@@ -85,6 +81,18 @@ void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const
         }
     }
     cerr << "Error: Edge not found or specified transportation type not present!" << endl;
+
+    // Prompt user for input again until valid inputs are provided
+    string newSource, newDestination, newTransportation;
+    cout << "Enter correct source: ";
+    cin >> newSource;
+    cout << "Enter correct destination: ";
+    cin >> newDestination;
+    cout << "Enter correct transportation type: ";
+    cin >> newTransportation;
+
+    // Recursively call deleteEdgehelper with new inputs
+    deleteEdgehelper(graph, newSource, newDestination, newTransportation);
 }
 
 bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
@@ -164,9 +172,33 @@ void GuideMe::bfs(string& source, unordered_map<string, vector<Edge>>& graph) {
 
 }
 
-//vector<string> GuideMe::dfs(string& source) {
-//
-//}
+void GuideMe::DFS(const unordered_map<string, vector<Edge>>& graph) {
+    unordered_map<string, bool> visited; //visited map to keep track of visited cities/nodes
+    string startCity;
+
+    cout << "Enter the starting city: ";
+    cin >> startCity;
+
+    //checking if starting city exists in the graph or no
+    if (graph.find(startCity) == graph.end()) {
+        cerr << "Error: City not found in the graph." << endl; //or cout, doesnt matter in this case
+        return;
+    }
+    //else hybda' mnha
+    DFSHelper(graph, startCity, visited);
+}
+
+void GuideMe::DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited) {
+    visited[city] = true;
+    cout << city << " ";
+
+    //all adjacent cities:
+    for (const Edge& edge : graph.at(city)) {
+        if (!visited[edge.destination]) {
+            DFSHelper(graph, edge.destination, visited);
+        }
+    }
+}
 
 void GuideMe::printPath(const vector<string>& path) {
     for (size_t i = 0; i < path.size(); ++i) {
