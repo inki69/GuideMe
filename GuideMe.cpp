@@ -11,30 +11,53 @@ void GuideMe::addEdge(unordered_map<string, vector<Edge>>& adjList, const string
     Edge reverseEdge(source, reverseTransportationPrices);
     adjList[edge.destination].push_back(reverseEdge);
 }
-/*
-vector<vector<string>> GuideMe::findAvailableRoutes(string& source, string& destination, int budget) {
 
+//vector<vector<string>> GuideMe::findAvailableRoutes(string& source, string& destination, int budget) {
+//
+//}
+
+//void GuideMe::updatEdge(string& source, string& destination, string transportation, int newCost) {
+//
+//}
+//void GuideMe::void deleteEdge(string& source, string& destination, string transportation) {
+//
+//}
+
+bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& adjList) {
+    for (const auto& pair : adjList) {
+        const vector<Edge>& edges = pair.second;
+        //Check if every other node is connected to this node
+        for (const auto& other_pair : adjList) {
+            if (pair.first != other_pair.first) {
+                bool found = false;
+                for (const auto& edge : edges) {
+                    if (edge.destination == other_pair.first) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    //  If any other node is not connected to this node, graph is not complete
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
-void GuideMe::updatEdge(string& source, string& destination, string transportation, int newCost) {
+//bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& adjList) {
+//
+//}
 
-}
-void GuideMe::void deleteEdge(string& source, string& destination, string transportation) {
+//vector<string> GuideMe::bfs(string& source) {
+//
+//}
+//
+//vector<string> GuideMe::dfs(string& source) {
+//
+//}
 
-}
-
-bool GuideMe::isCompleteMap() {
-
-}
-
-vector<string> GuideMe::bfs(string& source) {
-
-}
-
-vector<string> GuideMe::dfs(string& source) {
-
-}
-*/
 
 
 

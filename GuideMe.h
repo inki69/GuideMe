@@ -21,7 +21,11 @@ public:
     //void deleteEdge(string& source, string& destination, string transportation);
 
     // Function to check if the transportation map is complete
-    //bool isCompleteMap();
+    bool isCompleteMap(unordered_map<string, vector<Edge>>& adjList);
+
+    //Function  to check if the transportation map is connected
+   // bool isConnectedMap();
+
 
     // Function to perform Breadth First Search (BFS)
     //vector<string> bfs(string& source);
