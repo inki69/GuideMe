@@ -19,9 +19,30 @@ void GuideMe::addEdge(unordered_map<string, vector<Edge>>& adjList, const string
 //void GuideMe::updatEdge(string& source, string& destination, string transportation, int newCost) {
 //
 //}
-//void GuideMe::void deleteEdge(string& source, string& destination, string transportation) {
-//
-//}
+void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportations) {
+    for (const auto& transportation : transportations) {
+        deleteEdgehelper(graph, source, destination, transportation);
+        deleteEdgehelper(graph, destination, source, transportation);
+    }
+}
+
+void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportation) {
+    auto it = graph.find(source);
+    if (it != graph.end()) {
+        vector<Edge>& edges = it->second;
+        for (auto& edge : edges) {
+            if (edge.destination == destination) {
+                auto priceIt = edge.transportationPrices.find(transportation);
+                if (priceIt != edge.transportationPrices.end()) {
+                    edge.transportationPrices.erase(priceIt);
+                    cout << "Transportation type '" << transportation << "' deleted successfully from edge " << source << " to " << destination << endl;
+                    return;
+                }
+            }
+        }
+    }
+    cerr << "Error: Edge not found or specified transportation type not present!" << endl;
+}
 
 bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& adjList) {
     for (const auto& pair : adjList) {

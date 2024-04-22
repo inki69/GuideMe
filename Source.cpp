@@ -11,7 +11,9 @@ int main() {
     files fileReader;
     unordered_map<string, vector<Edge>> graph = fileReader.createGraphFromFile("TransportationMap.txt");
     GuideMe method;
-    // Print the adjacency list
+
+    // Print the original adjacency list
+    cout << "Original Adjacency List:" << endl;
     for (const auto& entry : graph) {
         cout << "From " << entry.first << " to:" << endl;
         for (const auto& edge : entry.second) {
@@ -24,6 +26,5 @@ int main() {
         cout << endl;
     }
 
-   
     return 0;
 }

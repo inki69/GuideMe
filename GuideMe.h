@@ -18,7 +18,8 @@ public:
     //void updatEdge(string& source, string& destination, string transportation, int newCost);
 
     // Function to delete a transportation link between two cities
-    //void deleteEdge(string& source, string& destination, string transportation);
+    void deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportation);
+    void deleteEdgehelper(unordered_map<string, vector<Edge>>& adjList,const string& source, const string& destination, const string& transportation);
 
     // Function to check if the transportation map is complete
     bool isCompleteMap(unordered_map<string, vector<Edge>>& adjList);
