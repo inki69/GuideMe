@@ -8,23 +8,18 @@
 using namespace std;
 
 int main() {
-    files fileHandler;
-    string filename = "TransportationMap.txt";
-    unordered_map<string, vector<Edge>> adjacencyList =fileHandler. createGraphFromFile(filename);
+    files fileReader;
+    unordered_map<string, vector<Edge>> graph = fileReader.createGraphFromFile("TransportationMap.txt");
 
-    // Display the adjacency list
-    for (const auto& kvp : adjacencyList) {
-        const string& source = kvp.first;
-        const vector<Edge>& edges = kvp.second;
-
-        cout << "Source: " << source << endl;
-        for (const auto& edge : edges) {
-            cout << "  Destination: " << edge.destination << endl;
-            cout << "  Uber: " << edge.uber << endl;
-            cout << "  Bus: " << edge.bus << endl;
-            cout << "  Microbus: " << edge.microbus << endl;
-            cout << "  Metro: " << edge.metro << endl;
-            cout << "  Train: " << edge.train << endl;
+    // Print the adjacency list
+    for (const auto& entry : graph) {
+        cout << "From " << entry.first << " to:" << endl;
+        for (const auto& edge : entry.second) {
+            cout << "    " << edge.destination << ": ";
+            for (const auto& pair : edge.transportationPrices) {
+                cout << pair.first << " $" << pair.second << " ";
+            }
+            cout << endl;
         }
         cout << endl;
     }

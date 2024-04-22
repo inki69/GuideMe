@@ -10,16 +10,10 @@ using namespace std;
 struct Edge {
     
     string destination;     // Destination city
-    double uber;    // Price of Uber transportation
-    double bus;     // Price of Bus transportation
-    double microbus;// Price of Microbus transportation
-    double metro;   // Price of Metro transportation
-    double train;   // Price of Train transportation
+    unordered_map<string, double> transportationPrices;
 
-    Edge(string dest, double uber, double bus, double microbus, double metro, double train)
-        :  destination(dest), uber(uber), bus(bus),
-        microbus(microbus), metro(metro), train(train) {}
-
+    Edge(const string& dest, const unordered_map<string, double>& prices) :
+        destination(dest), transportationPrices(prices) {}
 };
 class files
 {

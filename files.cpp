@@ -4,9 +4,8 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <utility>
-#include"files.h"
-#include"GuideMe.h"
+#include "files.h"
+#include "GuideMe.h"
 
 using namespace std;
 
@@ -32,36 +31,20 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
     while (getline(file, line)) {
         stringstream ss(line);
         getline(ss, source, ' ');
-        ss.ignore(2);
+        ss.ignore(2); // Ignore two characters (dash and space)
         ss >> destination;
 
-        double uber = -1, bus = -1, microbus = -1, metro = -1, train = -1;
+        unordered_map<string, double> transportationPrices;
         string transportationType;
         double price;
 
         while (ss >> transportationType >> price) {
-            if (transportationType == "Uber") {
-                uber = price;
-            }
-            else if (transportationType == "Bus") {
-                bus = price;
-            }
-            else if (transportationType == "Microbus") {
-                microbus = price;
-            }
-            else if (transportationType == "Metro") {
-                metro = price;
-            }
-            else if (transportationType == "Train") {
-                train = price;
-            }
+            transportationPrices[transportationType] = price;
         }
 
-
-        Edge newEdge(destination, uber, bus, microbus, metro, train);
+        Edge newEdge(destination, transportationPrices);
         method.addEdge(adjacencyList, source, newEdge);
     }
-
 
     file.close();
     return adjacencyList;
