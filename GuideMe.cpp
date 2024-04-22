@@ -17,9 +17,50 @@ void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& 
 //
 //}
 
-//void GuideMe::updatEdge(string& source, string& destination, string transportation, int newCost) {
-//
-//}
+void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
+
+    updateEdgehelper(graph, source, destination, transportation, newCost);
+    updateEdgehelper(graph, destination, source, transportation, newCost);
+
+}
+
+void GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
+    auto sourceIt = graph.find(source);
+    if (sourceIt == graph.end()) {
+        cerr << "Error: Source city '" << source << "' not found." << endl;
+        return;
+    }
+
+    // Find the edge corresponding to the destination and source
+    vector<Edge>& edges = sourceIt->second;
+    auto edgeIt = edges.end();  // Initialize edgeIt to the end iterator as a default value
+
+    // Iterate over the edges vector
+    for (auto it = edges.begin(); it != edges.end(); ++it) {
+        // Check if the destination of the current Edge matches the provided destination
+        if (it->destination == destination) {
+            // If found, update edgeIt and break out of the loop
+            edgeIt = it;
+            break;
+        }
+    }
+
+
+    if (edgeIt == edges.end()) {
+        cerr << "Error: Destination city '" << destination << "' not reachable from '" << source << "'." << endl;
+        return;
+    }
+
+    // Update the corresponding transportation price for the specified destination
+    auto& transportationPrices = edgeIt->transportationPrices;
+    if (transportationPrices.find(transportation) != transportationPrices.end()) {
+        transportationPrices[transportation] = newCost;
+        cout << transportation << " price from " << source << " to " << destination << " updated successfully." << endl;
+    }
+    else {
+        cerr << "Error: Transportation type '" << transportation << "' not found for the specified destination." << endl;
+    }
+}
 void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportations) {
     for (const auto& transportation : transportations) {
         deleteEdgehelper(graph, source, destination, transportation);

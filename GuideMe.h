@@ -15,7 +15,8 @@ public:
     void addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge);
 
     // Function to update transportation cost between two cities
-    //void updatEdge(string& source, string& destination, string transportation, int newCost);
+    void updateEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) ;
+    void updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost);
 
     // Function to delete a transportation link between two cities
     void deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportation);
