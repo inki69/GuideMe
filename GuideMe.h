@@ -31,7 +31,7 @@ public:
 
 
     // Function to perform Breadth First Search (BFS)
-    void bfs(string& source, unordered_map<string, vector<Edge>>& graph);
+    void BFS(unordered_map<string, vector<Edge>>& graph);
 
     void findAllPaths(const string& source, const string& destination, const unordered_map<string, vector<Edge>>& graph);
 

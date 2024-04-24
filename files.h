@@ -20,4 +20,5 @@ class files
 
 public:
     unordered_map<string, vector<Edge>> createGraphFromFile(const string& filename);
+    void fileEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge);
 };

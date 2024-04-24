@@ -1,17 +1,10 @@
 #include "GuideMe.h"
 #include <unordered_set>
 #include <set>
-void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
-    graph[source].push_back(edge);
 
-    // Create a new Edge object with the reverse direction (destination to source)
-    unordered_map<string, double> reverseTransportationPrices;
-    for (const auto& pair : edge.transportationPrices) {
-        reverseTransportationPrices[pair.first] = pair.second;
-    }
-    Edge reverseEdge(source, reverseTransportationPrices);
-    graph[edge.destination].push_back(reverseEdge);
-}
+//void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
+//    if()
+//}
 
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
 
@@ -149,12 +142,15 @@ bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& graph) {
     
 }
 
-void GuideMe::bfs(string& source, unordered_map<string, vector<Edge>>& graph) {
+void GuideMe::BFS(unordered_map<string, vector<Edge>>& graph) {
     queue<string> q;
     unordered_set<string> visited;
+    string startCity;
 
-    q.push(source);
-    visited.insert(source);
+    cout << "Enter the starting city: ";
+    cin >> startCity;
+    q.push(startCity);
+    visited.insert(startCity);
 
     while (!q.empty()) {
         string currentSource = q.front();

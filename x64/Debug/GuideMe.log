@@ -1,5 +1,6 @@
 ﻿  GuideMe.cpp
   Source.cpp
-  files.cpp
+C:\Users\salah\OneDrive\Desktop\GuideMe\Source.cpp(15,9): warning C4101: 'choice': unreferenced local variable
+C:\Users\salah\OneDrive\Desktop\GuideMe\Source.cpp(13,13): warning C4101: 'method': unreferenced local variable
   Generating Code...
   GuideMe.vcxproj -> C:\Users\salah\OneDrive\Desktop\GuideMe\x64\Debug\GuideMe.exe

@@ -12,7 +12,6 @@ using namespace std;
 unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& filename) {
     ifstream file(filename);
     unordered_map<string, vector<Edge>> adjacencyList;
-    GuideMe method;
 
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filename << endl;
@@ -43,9 +42,21 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
         }
 
         Edge newEdge(destination, transportationPrices);
-        method.addEdge(adjacencyList, source, newEdge);
+        fileEdge(adjacencyList, source, newEdge);
     }
 
     file.close();
     return adjacencyList;
+}
+
+void files::fileEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
+    graph[source].push_back(edge);
+
+    // Create a new Edge object with the reverse direction (destination to source)
+    unordered_map<string, double> reverseTransportationPrices;
+    for (const auto& pair : edge.transportationPrices) {
+        reverseTransportationPrices[pair.first] = pair.second;
+    }
+    Edge reverseEdge(source, reverseTransportationPrices);
+    graph[edge.destination].push_back(reverseEdge);
 }
