@@ -1,19 +1,43 @@
 #include "GuideMe.h"
 #include <unordered_set>
 #include <set>
-
+#include <vector>
+#include <string>
+using namespace std;
 //void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
 //    if()
 //}
 
-void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
+void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
+  
+    int newCost;
+    string transportation;
+    char choice;
+    do {
+        
+        string source, destination;
+        cout << "Enter source city: ";
+        cin >> source;
+        cout << "Enter destination city: ";
+        cin >> destination;
+        cout << "Enter the transportation type you want to update : ";
+        cin >> transportation;
+        cout << "Enter the updated price for " << transportation << " from " << source << " to " << destination << ": ";
+        cin >> newCost;
+        updateEdgehelper(graph, source, destination, transportation, newCost);
+        updateEdgehelper(graph, destination, source, transportation, newCost);
+        cout << "Do you want to update another transportation ? (y/n): ";
+        cin >> choice;
 
-    updateEdgehelper(graph, source, destination, transportation, newCost);
-    updateEdgehelper(graph, destination, source, transportation, newCost);
+
+    } while ((choice == 'y' || choice == 'Y'));
+   
 
 }
 
 void GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
+
+  
     auto sourceIt = graph.find(source);
     if (sourceIt == graph.end()) {
         cerr << "Error: Source city '" << source << "' not found." << endl;
@@ -51,12 +75,31 @@ void GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const
     }
 }
 
-void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const vector<string>& transportations) {
+void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph) {
+    string source, destination;
+    cout << "Enter source city: ";
+    cin >> source;
+    cout << "Enter destination city: ";
+    cin >> destination;
+
+
+    vector<string> transportations;
+    char choice;
+    do {
+        string transportation;
+        cout << "Enter transportation type to delete: ";
+        cin >> transportation;
+        transportations.push_back(transportation);
+        cout << "Do you want to delete another transportation type? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
     for (const auto& transportation : transportations) {
         deleteEdgehelper(graph, source, destination, transportation);
         deleteEdgehelper(graph, destination, source, transportation);
     }
 }
+
 
 void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportation) {
     auto it = graph.find(source);
@@ -70,22 +113,42 @@ void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const
                     cout << "Transportation type '" << transportation << "' deleted successfully from edge " << source << " to " << destination << endl;
                     return;
                 }
+                else {
+
+                    cout << "Error: Edge not found or specified transportation type not present!" << endl;
+                    deleteEdge(graph);
+
+                }
             }
         }
     }
-    cerr << "Error: Edge not found or specified transportation type not present!" << endl;
+    else {
 
-    // Prompt user for input again until valid inputs are provided
-    string newSource, newDestination, newTransportation;
-    cout << "Enter correct source: ";
-    cin >> newSource;
-    cout << "Enter correct destination: ";
-    cin >> newDestination;
-    cout << "Enter correct transportation type: ";
-    cin >> newTransportation;
+        cout << "Error: Edge not found or specified transportation type not present!" << endl;
+        deleteEdge(graph);
 
-    // Recursively call deleteEdgehelper with new inputs
-    deleteEdgehelper(graph, newSource, newDestination, newTransportation);
+    }
+
+    //// Prompt user for input again until valid inputs are provided
+    //string newSource, newDestination, newTransportation;
+    //cout << "Enter correct source: ";
+    //cin >> newSource;
+    //cout << "Enter correct destination: ";
+    //cin >> newDestination;
+    //vector<string> transportations;
+
+    //char choice;
+    //do {
+    //   
+    //    cout << "Enter transportation type to delete: ";
+    //    cin >> newTransportation;
+    //    transportations.push_back(newTransportation);
+    //    cout << "Do you want to delete another transportation type? (y/n): ";
+    //    cin >> choice;
+    //} while (choice == 'y' || choice == 'Y');
+
+    //// Recursively call deleteEdgehelper with new inputs
+    //deleteEdgehelper(graph, newSource, newDestination, newTransportation);
 }
 
 bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
@@ -156,6 +219,7 @@ void GuideMe::BFS(unordered_map<string, vector<Edge>>& graph) {
         string currentSource = q.front();
         q.pop();
         cout << currentSource << " ";
+        cout << endl;
 
         for (const auto& edge : graph[currentSource]) {
             string destination = edge.destination;
@@ -187,7 +251,7 @@ void GuideMe::DFS(const unordered_map<string, vector<Edge>>& graph) {
 void GuideMe::DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited) {
     visited[city] = true;
     cout << city << " ";
-
+    cout << endl;
     //all adjacent cities:
     for (const Edge& edge : graph.at(city)) {
         if (!visited[edge.destination]) {

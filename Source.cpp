@@ -5,61 +5,87 @@
 #include <vector>
 #include <sstream>
 #include<unordered_map>
+#include <iomanip>
 using namespace std;
 
 int main() {
     files fileReader;
     unordered_map<string, vector<Edge>> graph = fileReader.createGraphFromFile("TransportationMap.txt");
     GuideMe method;
-
+    cout << setw(70) << "************ Welcome To GuideMe ************" << endl;
     int choice;
 
-   // do {
-      /*  cout << "Welcome To GuideMe"<<endl;
-        cout << "1. Traverse Using DFS" << endl;
-        cout << "2. Traverse Using BFS" << endl;
-        cout << "3. Add Transportation" << endl;
-        cout << "4. Update Transportation" << endl;
-        cout << "5. Delete Transportation" << endl;
-        cout << "6. Check If The Graph Is Connected" << endl;
-        cout << "7. Check If The Graph Is Complete" << endl;
-        cout << "8. Tour The Country" << endl;
-        cout << "9. Exit" << endl;*/
+    do {
 
-  //      cin >> choice;
+        cout << "==Main Menu==\n\n";
+        cout << "1. Traverse Using DFS\n";
+        cout << "2. Traverse Using BFS\n";
+        cout << "3. Add Transportation\n";
+        cout << "4. Update Transportation\n";
+        cout << "5. Delete Transportation\n";
+        cout << "6. Check If The Graph Is Connected\n";
+        cout << "7. Check If The Graph Is Complete\n";
+        cout << "8. Tour The Country\n";
+        cout << "9. Exit\n";
 
-  //      switch (choice) {
-  //      case 1:
-  //          method.DFS(graph);
-  //          break;
-  //      case 2:
-  //          method.BFS(graph);
-  //          break;
-  //      case 3:
-  //          string source, destination;
-  //          Edge edge;
-  //          cout << "Enter the source city: ";
-  //          cin >> source;
-  //          cout << "Enter the destination city: ";
-  //          cout << "Enter Transportation type: ";
-  //          cout << "Enter Transportation price: ";
-  //          method.addEdge(graph,source,edge);
-  //          break;
-  //      case 4:
-  //          break;
-  //      case 5:
-  //          break;
-  //      case 6:
-  //          break;
-  //      case 7:
-  //          break;
-  //      case 8:
-  //          break;
-  //      case 9:
-  //          break;
-  //      }
+        cin >> choice;
 
-  //  }while(true)
+        switch (choice) {
+        case 1:
+            system("cls");
+            method.DFS(graph);
+            break;
+        case 2:
+            system("cls");
+            method.BFS(graph);
+            break;
+        case 3:
+            // WORKING ON ITT
+            /*string source, destination;
+            Edge edge;
+            cout << "Enter the source city: ";
+            cin >> source;
+            cout << "Enter the destination city: ";
+            cout << "Enter Transportation type: ";
+            cout << "Enter Transportation price: ";
+            method.addEdge(graph,source,edge);*/
+            break;
+        case 4:
+            system("cls");
+            method.updateEdge(graph);
+            break;
+        case 5:
+            system("cls");
+            method.deleteEdge(graph);
+            break;
+        case 6:
+            system("cls");
+            if (method.isConnectedMap(graph)) {
+                cout << "The graph is connected.\n";
+            }
+            else cout << "The graph is not connected.\n";
+
+            break;
+        case 7:
+            system("cls");
+            if (method.isCompleteMap(graph)) {
+                cout << "The graph is completed.\n";
+            }
+            else cout << "The graph is not completed.\n";
+            method.isCompleteMap(graph);
+            break;
+        case 8:
+            // WORKING ON ITT
+            break;
+
+        case 9:
+            cout << "Exiting the system.....\n";
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+
+    }while (choice != 9);
   //  
 
   ////  string source = "Asyut";
@@ -84,35 +110,17 @@ int main() {
   //      }
   //      cout << endl;
   //  }
-  //  // Prompt the user to provide input for updating transportation options
-  //  string source, destination;
-  //  cout << "Enter source city: ";
-  //  cin >> source;
-  //  cout << "Enter destination city: ";
-  //  cin >> destination;
-
-  //  string transportation;
-  //  cout << "Enter the transportation type you want to update : ";
-  //  cin >> transportation;
-
-  //  int newCost;
-  //  cout << "Enter the updated price for " << transportation << " from " << source << " to " << destination << ": ";
-  //  cin >> newCost;
-
-  //  // Update transportation options
-  //  GuideMe guide;
-  //  guide.updateEdge(graph, source, destination, transportation, newCost);
-
-  //  for (const auto& entry : graph) {
-  //      const string& source = entry.first;
-  //      const vector<Edge>& edges = entry.second;
-  //      for (const auto& edge : edges) {
-  //          cout << "From " << source << " to " << edge.destination << ":" << endl;
-  //          for (const auto& pair : edge.transportationPrices) {
-  //              cout << "  " << pair.first << ": " << pair.second << endl;
-  //          }
-  //      }
-  //  }
+  
+    for (const auto& entry : graph) {
+        const string& source = entry.first;
+        const vector<Edge>& edges = entry.second;
+        for (const auto& edge : edges) {
+            cout << "From " << source << " to " << edge.destination << ":" << endl;
+            for (const auto& pair : edge.transportationPrices) {
+                cout << "  " << pair.first << ": " << pair.second << endl;
+            }
+        }
+    }
   
     return 0;
 }
