@@ -30,12 +30,12 @@ void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const st
 
 
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
-  
+
     int newCost;
     string transportation;
     char choice;
     do {
-        
+
         string source, destination;
         cout << "Enter source city: ";
         cin >> source;
@@ -52,13 +52,13 @@ void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
 
 
     } while ((choice == 'y' || choice == 'Y'));
-   
+
 
 }
 
 void GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost) {
 
-  
+
     auto sourceIt = graph.find(source);
     if (sourceIt == graph.end()) {
         cerr << "Error: Source city '" << source << "' not found." << endl;
@@ -120,7 +120,6 @@ void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph) {
         deleteEdgehelper(graph, destination, source, transportation);
     }
 }
-
 
 void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportation) {
     auto it = graph.find(source);
@@ -196,7 +195,7 @@ bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
 }
 
 bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& graph) {
-   
+
     if (graph.empty()) return false; // If the graph has no nodes, it's not connected
 
     unordered_set<string> visited; // Set to store visited nodes
@@ -223,7 +222,7 @@ bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& graph) {
     // Check if all nodes are visited
     return visited.size() == graph.size();
 
-    
+
 }
 
 void GuideMe::BFS(unordered_map<string, vector<Edge>>& graph) {
@@ -319,8 +318,6 @@ void GuideMe::findAllPaths(const string& source, const string& destination, cons
 
     dfsAllPaths(source, destination, graph, visited, path);
 }
-
-
 
 
 

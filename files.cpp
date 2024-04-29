@@ -57,3 +57,28 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
     return graph;
 }
 
+void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& adjacencyList, const string& filename) {
+    ofstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Error: Unable to open file " << filename << " for writing." << endl;
+        return;
+    }
+
+    for (const auto& pair : adjacencyList) {
+        const string& source = pair.first;
+        const vector<Edge>& edges = pair.second;
+
+        for (const Edge& edge : edges) {
+            file << source << " - " << edge.destination << " ";
+
+            for (const auto& pricePair : edge.transportationPrices) {
+                file << pricePair.first << " " << pricePair.second << " ";
+            }
+
+            file << endl;
+        }
+    }
+
+    file.close();
+}

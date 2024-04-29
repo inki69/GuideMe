@@ -21,5 +21,5 @@ class files
 
 public:
     unordered_map<string, vector<Edge>> createGraphFromFile(const string& filename);
-    
+    void writeGraphToFile(const unordered_map<string, vector<Edge>>& adjacencyList, const string& filename);
 };
