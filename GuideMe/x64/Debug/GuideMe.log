@@ -1,6 +1,2 @@
 ﻿  files.cpp
-  GuideMe.cpp
-  Source.cpp
-  Generating Code...
-C:\Users\Mariam\Documents\GitHub\GuideMe\Source.cpp(13,13): warning C4101: 'method': unreferenced local variable
   GuideMe.vcxproj -> C:\Users\Mariam\Documents\GitHub\GuideMe\x64\Debug\GuideMe.exe

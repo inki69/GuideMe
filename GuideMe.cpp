@@ -4,9 +4,30 @@
 #include <vector>
 #include <string>
 using namespace std;
-//void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
-//    if()
-//}
+
+void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price) {
+    addEdgeHelper(graph, source, destination, transportationType, price);
+    addEdgeHelper(graph, destination, source, transportationType, price);
+}
+
+void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price) {
+    // Check if there is an existing edge between source and destination
+    if (graph.find(source) != graph.end()) {
+        vector<Edge>& edges = graph[source];
+        for (Edge& edge : edges) {
+            if (edge.destination == destination) {
+                // Edge already exists, update transportation prices
+                edge.transportationPrices[transportationType] = price;
+                return; // Exit the function
+            }
+        }
+    }
+
+    // If no existing edge found, create a new one and add it to the graph
+    Edge newEdge(destination, { {transportationType, price} });
+    graph[source].push_back(newEdge);
+}
+
 
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
   

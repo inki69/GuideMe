@@ -11,11 +11,11 @@ using namespace std;
 
 unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& filename) {
     ifstream file(filename);
-    unordered_map<string, vector<Edge>> adjacencyList;
+    unordered_map<string, vector<Edge>> graph;
 
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filename << endl;
-        return adjacencyList;
+        return graph;
     }
 
     int numEdges;
@@ -40,23 +40,20 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
         while (ss >> transportationType >> price) {
             transportationPrices[transportationType] = price;
         }
-
+        
         Edge newEdge(destination, transportationPrices);
-        fileEdge(adjacencyList, source, newEdge);
+        graph[source].push_back(newEdge);
+
+        // Create a new Edge object with the reverse direction (destination to source)
+        unordered_map<string, double> reverseTransportationPrices;
+        for (const auto& pair : newEdge.transportationPrices) {
+            reverseTransportationPrices[pair.first] = pair.second;
+        }
+        Edge reverseEdge(source, reverseTransportationPrices);
+        graph[newEdge.destination].push_back(reverseEdge);
     }
 
     file.close();
-    return adjacencyList;
+    return graph;
 }
 
-void files::fileEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge) {
-    graph[source].push_back(edge);
-
-    // Create a new Edge object with the reverse direction (destination to source)
-    unordered_map<string, double> reverseTransportationPrices;
-    for (const auto& pair : edge.transportationPrices) {
-        reverseTransportationPrices[pair.first] = pair.second;
-    }
-    Edge reverseEdge(source, reverseTransportationPrices);
-    graph[edge.destination].push_back(reverseEdge);
-}

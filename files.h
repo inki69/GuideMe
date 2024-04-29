@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include<unordered_map>
+
 using namespace std;
 
 //Struct that represents an edge
@@ -20,5 +21,5 @@ class files
 
 public:
     unordered_map<string, vector<Edge>> createGraphFromFile(const string& filename);
-    void fileEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge);
+    
 };

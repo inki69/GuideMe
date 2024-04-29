@@ -12,7 +12,8 @@ using namespace std;
 class GuideMe {
 public:
 
-    void addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const Edge& edge);
+    void addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price);
+    void addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price);
 
     void updateEdge(unordered_map<string, vector<Edge>>& graph) ;
     void updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost);
