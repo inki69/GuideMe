@@ -57,19 +57,27 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
     return graph;
 }
 
-void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& adjacencyList, const string& filename) {
+void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& graph, const string& filename) {
     ofstream file(filename);
-
+    // Write the number of edges to the file
+    file << graph.size() << endl;
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filename << " for writing." << endl;
         return;
     }
 
-    for (const auto& pair : adjacencyList) {
+    unordered_set<string> visitedSources;  // Track visited sources
+
+    for (const auto& pair : graph) {
         const string& source = pair.first;
         const vector<Edge>& edges = pair.second;
 
         for (const Edge& edge : edges) {
+            if (visitedSources.count(edge.destination) > 0) {
+                // Skip if the source has been entered as a destination before
+                continue;
+            }
+
             file << source << " - " << edge.destination << " ";
 
             for (const auto& pricePair : edge.transportationPrices) {
@@ -77,6 +85,8 @@ void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& adjacenc
             }
 
             file << endl;
+
+            visitedSources.insert(source);  // Mark source as visited
         }
     }
 
