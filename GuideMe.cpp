@@ -5,11 +5,31 @@
 #include <string>
 using namespace std;
 
-void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price) {
-    addEdgeHelper(graph, source, destination, transportationType, price);
-    addEdgeHelper(graph, destination, source, transportationType, price);
-}
 
+void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph) {
+    string source, destination, transportationType;
+    int price;
+    char userChoice;
+
+    do {
+        cout << "Enter source city: ";
+        cin >> source;
+        cout << "Enter destination city: ";
+        cin >> destination;
+        cout << "Enter transportation type:";
+        cin >> transportationType;
+        cout << "Enter the price:";
+        cin >> price;
+
+        addEdgeHelper(graph, source, destination, transportationType, price);
+        addEdgeHelper(graph, destination, source, transportationType, price);
+
+        cout << "Do you want to add another transportation? (y/n): ";
+        cin >> userChoice;
+    } while (userChoice == 'y' || userChoice == 'Y');
+
+
+}
 void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price) {
     // Check if there is an existing edge between source and destination
     if (graph.find(source) != graph.end()) {
@@ -148,27 +168,6 @@ void GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const
         deleteEdge(graph);
 
     }
-
-    //// Prompt user for input again until valid inputs are provided
-    //string newSource, newDestination, newTransportation;
-    //cout << "Enter correct source: ";
-    //cin >> newSource;
-    //cout << "Enter correct destination: ";
-    //cin >> newDestination;
-    //vector<string> transportations;
-
-    //char choice;
-    //do {
-    //   
-    //    cout << "Enter transportation type to delete: ";
-    //    cin >> newTransportation;
-    //    transportations.push_back(newTransportation);
-    //    cout << "Do you want to delete another transportation type? (y/n): ";
-    //    cin >> choice;
-    //} while (choice == 'y' || choice == 'Y');
-
-    //// Recursively call deleteEdgehelper with new inputs
-    //deleteEdgehelper(graph, newSource, newDestination, newTransportation);
 }
 
 bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
@@ -252,72 +251,116 @@ void GuideMe::BFS(unordered_map<string, vector<Edge>>& graph) {
 
 }
 
-void GuideMe::DFS(const unordered_map<string, vector<Edge>>& graph) {
-    unordered_map<string, bool> visited; //visited map to keep track of visited cities/nodes
+//void GuideMe::DFS(const unordered_map<string, vector<Edge>>& graph) {
+//    unordered_map<string, bool> visited; //visited map to keep track of visited cities/nodes
+//    string startCity;
+//
+//    cout << "Enter the starting city: ";
+//    cin >> startCity;
+//
+//    //checking if starting city exists in the graph or no
+//    if (graph.find(startCity) == graph.end()) {
+//        cerr << "Error: City not found in the graph." << endl; //or cout, doesnt matter in this case
+//        return;
+//    }
+//    //else hybda' mnha
+//    DFSHelper(graph, startCity, visited);
+//}
+//
+//void GuideMe::DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited) {
+//    visited[city] = true;
+//    cout << city << " ";
+//    cout << endl;
+//    //all adjacent cities:
+//    for (const Edge& edge : graph.at(city)) {
+//        if (!visited[edge.destination]) {
+//            DFSHelper(graph, edge.destination, visited);
+//        }
+//    }
+//}
+
+void GuideMe::DFS(unordered_map<string, vector<Edge>>& graph) {
+    stack<string> stack;
+    unordered_set<string> visited;
     string startCity;
 
     cout << "Enter the starting city: ";
     cin >> startCity;
+    stack.push(startCity);
+    visited.insert(startCity);
 
-    //checking if starting city exists in the graph or no
-    if (graph.find(startCity) == graph.end()) {
-        cerr << "Error: City not found in the graph." << endl; //or cout, doesnt matter in this case
-        return;
-    }
-    //else hybda' mnha
-    DFSHelper(graph, startCity, visited);
-}
+    while (!stack.empty()) {
+        string currentSource = stack.top();
+        stack.pop();
+        cout << currentSource << " ";
+        cout << endl;
 
-void GuideMe::DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited) {
-    visited[city] = true;
-    cout << city << " ";
-    cout << endl;
-    //all adjacent cities:
-    for (const Edge& edge : graph.at(city)) {
-        if (!visited[edge.destination]) {
-            DFSHelper(graph, edge.destination, visited);
+        for (const auto& edge : graph[currentSource]) {
+            string destination = edge.destination;
+            if (visited.find(destination) == visited.end()) {
+                visited.insert(destination);
+                stack.push(destination);
+            }
         }
     }
 }
 
-void GuideMe::printPath(const vector<string>& path) {
-    for (size_t i = 0; i < path.size(); ++i) {
-        cout << path[i];
-        if (i < path.size() - 1) {
-            cout << " -> ";
-        }
-    }
-    cout << endl;
-}
+//Enumerate paths with backtracking
+void GuideMe::dfsAllPaths(string current, const string& destination, double currentBudget,
+    unordered_map<string, vector<Edge>> graph,
+    unordered_set<string>& visited,
+    vector<pair<string, string>>& path,
+    double totalCost) {
 
-// Modified DFS to find all paths between two vertices in an undirected graph
-void GuideMe::dfsAllPaths(const string& current, const string& destination, const unordered_map<string, vector<Edge>>& graph, unordered_set<string>& visited, vector<string>& path) {
     visited.insert(current);
-    path.push_back(current);
 
-    if (current == destination) {
-        printPath(path);
-    }
-    else {
-        for (const auto& edge : graph.at(current)) {
-            string nextDestination = edge.destination;
-            if (visited.find(nextDestination) == visited.end()) {
-                dfsAllPaths(nextDestination, destination, graph, visited, path);
+    for (const auto& edge : graph[current]) {
+        for (const auto& pair : edge.transportationPrices) {
+            const string& currentTransportation = pair.first;
+            const double cost = pair.second;
+
+            if (currentBudget - cost >= 0 && visited.find(edge.destination) == visited.end()) { //ytzbat
+                path.push_back(make_pair(current, currentTransportation));
+
+                double newBudget = currentBudget - cost;
+                double newTotalCost = totalCost + cost;
+
+                if (edge.destination == destination) {
+                    printPath(path, newTotalCost,destination);
+                }
+                else {
+                    dfsAllPaths(edge.destination, destination, newBudget, graph, visited, path, newTotalCost);
+                }
+
+                path.pop_back(); //Backtrack
             }
         }
     }
 
-    visited.erase(current);
-    path.pop_back();
+    visited.erase(current); //Backtrack feha moshkla ig
 }
 
-// Function to find all paths between two vertices in an undirected graph
-void GuideMe::findAllPaths(const string& source, const string& destination, const unordered_map<string, vector<Edge>>& graph) {
+void GuideMe::printPath(const vector<pair<string, string>>& path, double totalCost,const string destination) {
+    for (const auto& p : path) {
+        cout << p.first << " (" << p.second << ") -> ";
+    }
+    cout << destination<<" Total cost= " << totalCost << endl;
+}
+
+void GuideMe::findAllPaths(const unordered_map<string, vector<Edge>>& graph) {
     unordered_set<string> visited;
-    vector<string> path;
+    vector<pair<string, string>> path;
+    double totalCost = 0.0;
+    string source, destination;
+    double budget;
 
-    dfsAllPaths(source, destination, graph, visited, path);
+    cout << "Enter source city: ";
+    cin >> source;
+    cout << "Enter destination city: ";
+    cin >> destination;
+    cout << "Enter budget: ";
+    cin >> budget;
+
+    dfsAllPaths(source, destination, budget, graph, visited, path, totalCost);
 }
-
-
 
