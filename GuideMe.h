@@ -8,14 +8,14 @@
 #include <unordered_set>
 using namespace std;
 
-// Class to represent the transportation map
+//class to represent the transportation map
 class GuideMe {
 public:
 
-    void addEdge(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price);
+    void addEdge(unordered_map<string, vector<Edge>>& graph);
     void addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price);
 
-    void updateEdge(unordered_map<string, vector<Edge>>& graph) ;
+    void updateEdge(unordered_map<string, vector<Edge>>& graph);
     void updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost);
 
     void deleteEdge(unordered_map<string, vector<Edge>>& graph);
@@ -27,16 +27,17 @@ public:
 
     void BFS(unordered_map<string, vector<Edge>>& graph);
 
-    void findAllPaths(const string& source, const string& destination, const unordered_map<string, vector<Edge>>& graph);
+    void DFS(unordered_map<string, vector<Edge>>& graph);
 
-    void dfsAllPaths(const string& current, const string& destination, const unordered_map<string, vector<Edge>>& graph, unordered_set<string>& visited, vector<string>& path);
-        
-    void printPath(const vector<string>& path);
+    void findAllPaths(const unordered_map<string, vector<Edge>>& graph);
 
-    void DFS(const unordered_map<string, vector<Edge>>& graph);
+    void dfsAllPaths(string current, const string& destination, double currentBudget,
+        unordered_map<string, vector<Edge>> graph,
+        unordered_set<string>& visited,
+        vector<pair<string, string>>& path,
+        double totalCost);
 
-    void DFSHelper(const unordered_map<string, vector<Edge>>& graph, const string& city, unordered_map<string, bool>& visited);
+    void printPath(const vector<pair<string, string>>& path, double totalCost, const string destination);
+
+    
 };
-
-
-
