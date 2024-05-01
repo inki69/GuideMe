@@ -1,8 +1,10 @@
-﻿#include"files.h"
+#include"files.h"
 #include"GuideMe.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
+
 #include <sstream>
 #include<unordered_map>
 #include <iomanip>
@@ -30,25 +32,21 @@ int main() {
 
         cin >> choice;
 
+
+
         switch (choice) {
         case 1:
             system("cls");
             method.DFS(graph);
+            
             break;
         case 2:
             system("cls");
             method.BFS(graph);
             break;
         case 3:
-            // WORKING ON ITT
-            /*string source, destination;
-            Edge edge;
-            cout << "Enter the source city: ";
-            cin >> source;
-            cout << "Enter the destination city: ";
-            cout << "Enter Transportation type: ";
-            cout << "Enter Transportation price: ";
-            method.addEdge(graph,source,edge);*/
+            system("cls");
+            method.addEdge(graph);
             break;
         case 4:
             system("cls");
@@ -75,7 +73,8 @@ int main() {
             method.isCompleteMap(graph);
             break;
         case 8:
-            // WORKING ON ITT
+            system("cls");
+            method.findAllPaths(graph);
             break;
 
         case 9:
