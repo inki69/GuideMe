@@ -19,18 +19,18 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
     }
 
     int numEdges;
-    file >> numEdges; // Read number of edges
+    file >> numEdges; //reading number of edges
 
     string line, source, destination;
 
-    // Consume the newline character after reading numEdges
+    //consuming the newline character after reading numEdges
     getline(file, line);
 
-    // Read transportation options from file
+    //reading transportation options from file
     while (getline(file, line)) {
         stringstream ss(line);
         getline(ss, source, ' ');
-        ss.ignore(2); // Ignore two characters (dash and space)
+        ss.ignore(2); //ignoring two characters (dash and space)
         ss >> destination;
 
         unordered_map<string, double> transportationPrices;
@@ -44,7 +44,7 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
         Edge newEdge(destination, transportationPrices);
         graph[source].push_back(newEdge);
 
-        // Create a new Edge object with the reverse direction (destination to source)
+        //creating a new Edge object with the reverse direction (destination to source)
         unordered_map<string, double> reverseTransportationPrices;
         for (const auto& pair : newEdge.transportationPrices) {
             reverseTransportationPrices[pair.first] = pair.second;
@@ -59,14 +59,14 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
 
 void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& graph, const string& filename) {
     ofstream file(filename);
-    // Write the number of edges to the file
+    //writing the number of edges to the file
     file << graph.size() << endl;
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filename << " for writing." << endl;
         return;
     }
 
-    unordered_set<string> visitedSources;  // Track visited sources
+    unordered_set<string> visitedSources;  //tracking visited sources
 
     for (const auto& pair : graph) {
         const string& source = pair.first;
@@ -74,7 +74,7 @@ void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& graph, c
 
         for (const Edge& edge : edges) {
             if (visitedSources.count(edge.destination) > 0) {
-                // Skip if the source has been entered as a destination before
+                //skip if the source has been entered as a destination before
                 continue;
             }
 
@@ -86,7 +86,7 @@ void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& graph, c
 
             file << endl;
 
-            visitedSources.insert(source);  // Mark source as visited
+            visitedSources.insert(source);  //marking source as visited
         }
     }
 
