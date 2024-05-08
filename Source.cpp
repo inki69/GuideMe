@@ -70,7 +70,6 @@ int main() {
                 cout << "The graph is completed.\n";
             }
             else cout << "The graph is not completed.\n";
-            method.isCompleteMap(graph);
             break;
         case 8:
             system("cls");
