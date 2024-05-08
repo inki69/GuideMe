@@ -13,13 +13,13 @@ class GuideMe {
 public:
 
     void addEdge(unordered_map<string, vector<Edge>>& graph);
-    void addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportationType, const int& price);
+    void addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportationType, const int price, bool& flag);
 
     void updateEdge(unordered_map<string, vector<Edge>>& graph);
-    void updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, string transportation, int newCost);
+    bool updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, string transportation, int newCost);
 
     void deleteEdge(unordered_map<string, vector<Edge>>& graph);
-    void deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string& source, const string& destination, const string& transportation);
+    bool deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportation);
 
     bool isCompleteMap(unordered_map<string, vector<Edge>>& graph);
 
@@ -31,13 +31,11 @@ public:
 
     void findAllPaths(const unordered_map<string, vector<Edge>>& graph);
 
-    void dfsAllPaths(string current, const string& destination, double currentBudget,
+    void dfsAllPaths(string current, const string destination, double currentBudget,
         unordered_map<string, vector<Edge>> graph,
         unordered_set<string>& visited,
         vector<pair<string, string>>& path,
         double totalCost);
 
-    void printPath(const vector<pair<string, string>>& path, double totalCost, const string destination);
-
-    
+   
 };
