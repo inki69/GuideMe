@@ -24,13 +24,19 @@ void GuideMe::addEdge(unordered_map<string, vector<Edge>>& graph) {
 
         addEdgeHelper(graph, source, destination, transportationType, price, flag);
         addEdgeHelper(graph, destination, source, transportationType, price, flag);
-        if (flag) cout << "Transportation price updated to '"<<transportationType<<"' between "<<source<<" & "<<destination<<"\n\n";
-        else cout << "Transportation with price "<<price<<" added to '" << transportationType << "' between " << source << " & " << destination << "\n\n";
+        if (flag) cout << "Transportation price addedd to '" << transportationType << "' between " << source << " & " << destination << "\n\n";
+        else cout << "Error: Source city or destination not found.. Please try again." << endl;
         cout << "Do you want to add another transportation? (y/n): ";
         cin >> userChoice;
     } while (userChoice == 'y' || userChoice == 'Y');
 }
-void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportationType, const int price, bool& flag) {
+bool GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportationType, const int price, bool& flag) {
+    if (graph.find(source) == graph.end()) {
+        return false;
+    }
+    if (graph.find(destination) == graph.end()) {
+        return false;
+    }
     //checking if there is an existing edge between source and destination
     if (graph.find(source) != graph.end()) {
         vector<Edge>& edges = graph[source];
@@ -39,7 +45,7 @@ void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const st
                 //edge already exists, update transportation prices
                 edge.transportationPrices[transportationType] = price;
                 flag = 1;
-                return;
+                return true;
             }
         }
     }
@@ -47,8 +53,9 @@ void GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const st
     //if no existing edge found, create a new one and add it to the graph
     Edge newEdge(destination, { {transportationType, price} });
     graph[source].push_back(newEdge);
+    flag = 1;
+    return true;
 }
-
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
     int newCost;
     string source, destination, transportation;

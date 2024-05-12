@@ -13,7 +13,7 @@ class GuideMe {
 public:
 
     void addEdge(unordered_map<string, vector<Edge>>& graph);
-    void addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportationType, const int price, bool& flag);
+    bool addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, const string transportationType, const int price, bool& flag);
 
     void updateEdge(unordered_map<string, vector<Edge>>& graph);
     bool updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const string source, const string destination, string transportation, int newCost);
