@@ -56,6 +56,7 @@ bool GuideMe::addEdgeHelper(unordered_map<string, vector<Edge>>& graph, const st
     flag = 1;
     return true;
 }
+
 void GuideMe::updateEdge(unordered_map<string, vector<Edge>>& graph) {
     int newCost;
     string source, destination, transportation;
@@ -115,6 +116,10 @@ bool GuideMe::updateEdgehelper(unordered_map<string, vector<Edge>>& graph, const
         }
     }
 
+    if (edgeIt == edges.end()) {
+        return flag = 0;
+    }
+
     //updating the corresponding transportation price for the specified destination
     auto& transportationPrices = edgeIt->transportationPrices;
     if (transportationPrices.find(transportation) != transportationPrices.end()) {
@@ -149,7 +154,7 @@ void GuideMe::deleteEdge(unordered_map<string, vector<Edge>>& graph) {
                 cin >> transportation;
                 flag=deleteEdgehelper(graph, source, destination, transportation);
                 flag=deleteEdgehelper(graph, destination, source, transportation);
-                if (flag==1) cout << "Transportation type '" << transportation << "' deleted successfully from edge " << source << " to " << destination << "Please try again.\n";
+                if (flag==1) cout << "Transportation type '" << transportation << "' deleted successfully from edge " << source << " to " << destination <<"\n";
                 else cout << "Error: Edge not found or specified transportation type not present! Please try again\n";
                 cout << "Do you want to delete another transportation type? (y/n): ";
                 cin >> choice;
@@ -195,29 +200,40 @@ bool GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const
     }
 }
 
+//bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
+//    for (const auto& pair : graph) {
+//        const vector<Edge>& edges = pair.second;
+//        //checking if every other node is connected to this node
+//        for (const auto& other_pair : graph) {
+//            if (pair.first != other_pair.first) {
+//                bool found = false;
+//                for (const auto& edge : edges) {
+//                    if (edge.destination == other_pair.first) {
+//                        found = true;
+//                        break;
+//                    }
+//                }
+//                if (!found) {
+//                    //if any other node is not connected to this node, graph is not complete
+//                    return false;
+//                }
+//            }
+//        }
+//    }
+//    return true;
+//}
 bool GuideMe::isCompleteMap(unordered_map<string, vector<Edge>>& graph) {
-    for (const auto& pair : graph) {
-        const vector<Edge>& edges = pair.second;
-        //checking if every other node is connected to this node
-        for (const auto& other_pair : graph) {
-            if (pair.first != other_pair.first) {
-                bool found = false;
-                for (const auto& edge : edges) {
-                    if (edge.destination == other_pair.first) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    //if any other node is not connected to this node, graph is not complete
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
 
+    int actualEdges = 0;
+    int numNodes = graph.size();
+    int expectedEdges = (numNodes * (numNodes - 1)) / 2;
+    for (const auto& pair : graph) {
+        actualEdges += pair.second.size(); // Counting the number of edges for each node
+    }
+    actualEdges /= 2;
+    return actualEdges == expectedEdges;
+
+}
 bool GuideMe::isConnectedMap(unordered_map<string, vector<Edge>>& graph) {
 
     if (graph.empty()) return false; //if the graph has no nodes, it's not connected
@@ -364,19 +380,39 @@ void GuideMe::findAllPaths(const unordered_map<string, vector<Edge>>& graph) {
 
     cout << "Enter source city: ";
     cin >> source;
-    cout << "Enter destination city: ";
-    cin >> destination;
-    cout << "Enter budget: ";
-    cin >> budget;
+    auto sourceIt = graph.find(source);
+    if (sourceIt != graph.end()) {
+        cout << "Enter destination city: ";
+        cin >> destination;
+        auto destIt = graph.find(destination);
+        if (destIt != graph.end()) {
+            cout << "Enter budget: ";
+            cin >> budget;
 
-    dfsAllPaths(source, destination, budget, graph, visited, path, totalCost);
-    sort(Routes.begin(), Routes.end());
+            dfsAllPaths(source, destination, budget, graph, visited, path, totalCost);
+            if (Routes.empty()) {
+                cout << "Error, insuffecient budget please try again." << endl;
+            }
+            else {
+                sort(Routes.begin(), Routes.end());
 
-    for (int i = 0; i < Routes.size(); i++) { //loop on the output, all paths(stored in routes)
-        for (int j = 0;j<Routes[i].second.size();j++) { //loop on each path without the total cost of that path (stored as a .first in routes)
-            cout << Routes[i].second[j].first << " (" << Routes[i].second[j].second << ") -> ";
+                for (int i = 0; i < Routes.size(); i++) { //loop on the output, all paths(stored in routes)
+                    for (int j = 0; j < Routes[i].second.size(); j++) { //loop on each path without the total cost of that path (stored as a .first in routes)
+                        cout << Routes[i].second[j].first << " (" << Routes[i].second[j].second << ") -> ";
+                    }
+                    cout << destination << " Total cost= " << Routes[i].first << endl;
+                }
+                cout << endl;
+                Routes.clear();
+            }
         }
-        cout << destination << " Total cost= " << Routes[i].first << endl;
+        else {
+            cout << "Destination city does not exist, please try again." << endl;
+        }
     }
-    cout << endl;
+    else {
+        cout << "Source city does not exist, please try again." << endl;
+    }
+
+    
 }
