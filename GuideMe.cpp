@@ -180,12 +180,10 @@ bool GuideMe::deleteEdgehelper(unordered_map<string, vector<Edge>>& graph, const
             auto priceIt = edge.transportationPrices.find(transportation);
             if (priceIt != edge.transportationPrices.end()) {
                 edge.transportationPrices.erase(priceIt);
-                if (edge.transportationPrices.empty()) {
-                    auto it2 = graph.find(source);
-                    auto& edgeVector = it2->second;
-                    for (auto it2 = edgeVector.begin(); it2 != edgeVector.end(); ++it2) {
-                        if (it2->destination == destination) {
-                            edgeVector.erase(it2);
+                if (edge.transportationPrices.empty()) {              
+                    for (auto it = edges.begin(); it != edges.end(); ++it) {
+                        if (it->destination == destination) {
+                            edges.erase(it);
                             break; //as there is only 1 edge between a vertex and a destination
                         }
                     }
@@ -369,8 +367,6 @@ void GuideMe::dfsAllPaths(string current, const string destination, double curre
     visited.erase(current);
 }
 
-
-
 void GuideMe::findAllPaths(const unordered_map<string, vector<Edge>>& graph) {
     unordered_set<string> visited;
     vector<pair<string, string>> path;
@@ -388,22 +384,24 @@ void GuideMe::findAllPaths(const unordered_map<string, vector<Edge>>& graph) {
         if (destIt != graph.end()) {
             cout << "Enter budget: ";
             cin >> budget;
-
-            dfsAllPaths(source, destination, budget, graph, visited, path, totalCost);
-            if (Routes.empty()) {
-                cout << "Error, insuffecient budget please try again." << endl;
-            }
+            if (!hasRoute(graph, source, destination)) { cout << "Error, there is no route available between these two cities." << endl; }
             else {
-                sort(Routes.begin(), Routes.end());
-
-                for (int i = 0; i < Routes.size(); i++) { //loop on the output, all paths(stored in routes)
-                    for (int j = 0; j < Routes[i].second.size(); j++) { //loop on each path without the total cost of that path (stored as a .first in routes)
-                        cout << Routes[i].second[j].first << " (" << Routes[i].second[j].second << ") -> ";
-                    }
-                    cout << destination << " Total cost= " << Routes[i].first << endl;
+                dfsAllPaths(source, destination, budget, graph, visited, path, totalCost);
+                if (Routes.empty()) {
+                    cout << "Error, insufficient budget." << endl;
                 }
-                cout << endl;
-                Routes.clear();
+                else {
+                    sort(Routes.begin(), Routes.end());
+
+                    for (int i = 0; i < Routes.size(); i++) { //loop on the output, all paths(stored in routes)
+                        for (int j = 0; j < Routes[i].second.size(); j++) { //loop on each path without the total cost of that path (stored as a .first in routes)
+                            cout << Routes[i].second[j].first << " (" << Routes[i].second[j].second << ") -> ";
+                        }
+                        cout << destination << " Total cost= " << Routes[i].first << endl;
+                    }
+                    cout << endl;
+                    Routes.clear();
+                }
             }
         }
         else {
@@ -415,4 +413,28 @@ void GuideMe::findAllPaths(const unordered_map<string, vector<Edge>>& graph) {
     }
 
     
+}
+
+bool GuideMe::hasRoute(unordered_map<string, vector<Edge>> graph, const string& source, const string& destination) {
+    unordered_map<string, bool> visited;
+    hasRouteHelper(graph,source, destination, visited);
+    return visited[destination];
+}
+
+bool GuideMe::hasRouteHelper(unordered_map<string, vector<Edge>> graph,const string& current, const string& destination, unordered_map<string, bool>& visited) {
+    if (current == destination) {
+        visited[current] = true;
+        return true;
+    }
+
+    if (visited.find(current) != visited.end()) return false;
+
+    visited[current] = true;
+
+    for (const Edge& edge : graph[current]) {
+        if (hasRouteHelper(graph,edge.destination, destination, visited))
+            return true;
+    }
+
+    return false;
 }
