@@ -45,11 +45,7 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
         graph[source].push_back(newEdge);
 
         //creating a new Edge object with the reverse direction (destination to source)
-        unordered_map<string, double> reverseTransportationPrices;
-        for (const auto& pair : newEdge.transportationPrices) {
-            reverseTransportationPrices[pair.first] = pair.second;
-        }
-        Edge reverseEdge(source, reverseTransportationPrices);
+        Edge reverseEdge(source, transportationPrices);
         graph[newEdge.destination].push_back(reverseEdge);
     }
 
@@ -60,7 +56,11 @@ unordered_map<string, vector<Edge>> files::createGraphFromFile(const string& fil
 void files::writeGraphToFile(const unordered_map<string, vector<Edge>>& graph, const string& filename) {
     ofstream file(filename);
     //writing the number of edges to the file
-    file << graph.size() << endl;
+    int totalEdges = 0;
+    for (const auto& vertex : graph) {
+        totalEdges += vertex.second.size();
+    }
+    file << totalEdges/2 << endl;
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filename << " for writing." << endl;
         return;
