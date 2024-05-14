@@ -37,5 +37,6 @@ public:
         vector<pair<string, string>>& path,
         double totalCost);
 
-   
+    bool hasRoute(unordered_map<string, vector<Edge>> graph,const string& source, const string& destination);
+    bool hasRouteHelper(unordered_map<string, vector<Edge>> graph,const string& current, const string& destination, unordered_map<string, bool>& visited);
 };
