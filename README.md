@@ -10,7 +10,7 @@ transportation links. Additionally, essential graph algorithms such as Depth
 First Search (DFS) and Breadth-First Search (BFS) are implemented to analyze 
 and navigate the city network efficiently. 
 
-#Input/Output Scenarios 
+# Input/Output Scenarios 
 Scenario 1: DFS 
 • Description: Traversing using DFS. 
 • Input: The user enters the starting city. 
